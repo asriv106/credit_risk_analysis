@@ -3,11 +3,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 import joblib
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report, roc_auc_score
 
 # Load your saved models and scaler
 rf_model = joblib.load('random_forest_model.pkl')
