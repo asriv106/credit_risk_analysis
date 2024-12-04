@@ -29,7 +29,7 @@ You can explore the data, understand model insights, and make your own predictio
 
 # Sidebar for navigation
 st.sidebar.title("Navigation")
-option = st.sidebar.radio("Select a Section", ["Overview", "Data Exploration", "Model Insights", "Make a Prediction", "Insights & Recommendations"])
+option = st.sidebar.radio("Select a Section", ["Overview","Make a Prediction"])
 
 # Overview Section
 if option == "Overview":
@@ -38,57 +38,6 @@ if option == "Overview":
     **Credit Risk Prediction** is crucial for financial institutions to minimize losses due to defaults.
     This app demonstrates how machine learning models like **Random Forest** and **XGBoost** can be used to predict loan defaults.
     """)
-
-# Data Exploration Section
-elif option == "Data Exploration":
-    st.header("Data Exploration")
-    st.write("Exploratory Data Analysis (EDA) on the Credit Risk Dataset.")
-
-    if st.checkbox("Show Raw Dataset"):
-        st.subheader("Raw Dataset")
-        st.write(data.head())
-
-    st.subheader("Missing Values Heatmap")
-    plt.figure(figsize=(10, 6))
-    sns.heatmap(data.isnull(), cbar=False, cmap='viridis')
-    st.pyplot(plt)
-
-    st.subheader("Income Category Distribution")
-    st.bar_chart(data['income_category'].value_counts())
-
-    st.subheader("Distribution of Numerical Features")
-    numerical_columns = ['person_age', 'person_income', 'person_emp_length',
-                         'loan_amnt', 'loan_int_rate', 'loan_percent_income']
-    fig, ax = plt.subplots(2, 3, figsize=(15, 10))
-    data[numerical_columns].hist(bins=20, edgecolor='black', ax=ax)
-    st.pyplot(fig)
-
-# Model Insights Section
-elif option == "Model Insights":
-    st.header("Model Insights")
-    st.write("Understanding the performance and features of the trained models.")
-
-    # Feature Importance for XGBoost
-    st.subheader("XGBoost Feature Importance")
-    feature_importance = xgb_model.feature_importances_
-    features = ['person_age', 'person_income', 'person_emp_length', 'loan_amnt',
-                'loan_int_rate', 'loan_percent_income', 'cb_person_default_on_file',
-                'debt_to_income_ratio', 'medium', 'high']
-
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.barplot(x=feature_importance, y=features, palette='viridis', ax=ax)
-    ax.set_title('Feature Importance in XGBoost Model')
-    st.pyplot(fig)
-
-    # Model Performance Metrics
-    st.subheader("Model Performance Metrics")
-    st.write("**XGBoost Model**")
-    st.write("- **Accuracy**: Approximately 91.3%")
-    st.write("- **ROC-AUC**: Approximately 96.89%")
-
-    st.write("**Random Forest Model**")
-    st.write("- **Accuracy**: Approximately 90.6%")
-    st.write("- **ROC-AUC**: Approximately 96.64%")
 
 # Make a Prediction Section
 elif option == "Make a Prediction":
@@ -153,22 +102,3 @@ elif option == "Make a Prediction":
         result = 'Default' if prediction == 1 else 'No Default'
         st.write(f"### Prediction: {result}")
         st.write(f"### Probability of Default: {probability:.2%}")
-
-
-# Insights & Recommendations Section
-elif option == "Insights & Recommendations":
-    st.header("Insights & Recommendations")
-    st.write("""
-    **Key Drivers of Loan Default:**
-    - **Debt-to-Income Ratio**: Strongest indicator of financial stress.
-    - **Loan Percent Income**: Higher values increase default risk.
-    - **Credit Bureau History**: Past defaults signal higher risk.
-    - **Loan Amount & Interest Rate**: Larger amounts and higher rates contribute to risk.
-    - **Employment Length**: Shorter employment history may increase risk.
-
-    **Recommendations for Risk Mitigation:**
-    - Implement stricter lending criteria for applicants with high debt-to-income ratios.
-    - Utilize credit bureau data to flag high-risk applicants.
-    - Offer financial counseling to applicants with high loan percent income values.
-    - Regularly monitor loans with higher risk profiles.
-    """)
